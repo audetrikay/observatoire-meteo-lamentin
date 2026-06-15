@@ -1,0 +1,76 @@
+{
+    "2026-05": {
+        "label": "Mai 2026",
+        "disponible": true,
+        "periode_debut": "01/05/2026",
+        "periode_fin": "31/05/2026",
+        "stations": 3,
+        "mesures": 519,
+        "temperature_moyenne": 26.7,
+        "temperature_max": 31.2,
+        "date_temperature_max": "04/05/2026 12:00",
+        "humidite_moyenne": 78.0,
+        "humidite_max": 99,
+        "date_humidite_max": "25/05/2026 04:00",
+        "pluie_cumulee": 28.0,
+        "intensite_pluie_max": 31.8,
+        "date_intensite_pluie_max": "25/05/2026 04:00",
+        "vent_moyen": 3.7,
+        "rafale_max": 30.6,
+        "date_rafale_max": "19/05/2026 08:00",
+        "pression_moyenne": 1014.2,
+        "pression_max": 1018.2,
+        "date_pression_max": "15/05/2026 08:00",
+        "graphes": {
+            "temperature": "graphes/2026-05_temperature_evolution.png",
+            "humidite": "graphes/2026-05_humidite_evolution.png",
+            "pression": "graphes/2026-05_pression_evolution.png",
+            "pluie_intensite": "graphes/2026-05_pluie_intensite.png",
+            "pluie_cumul": "graphes/2026-05_pluie_cumul_journalier.png",
+            "rafales": "graphes/2026-05_rafales_evolution.png",
+            "rose_vents": "graphes/2026-05_rose_des_vents.png"
+        }
+    },
+    "2026-06": {
+        "label": "Juin 2026",
+        "disponible": true,
+        "periode_debut": "01/06/2026",
+        "periode_fin": "12/06/2026",
+        "stations": 3,
+        "mesures": 210,
+        "temperature_moyenne": 27.5,
+        "temperature_max": 30.9,
+        "date_temperature_max": "10/06/2026 12:00",
+        "humidite_moyenne": 75.1,
+        "humidite_max": 91,
+        "date_humidite_max": "06/06/2026 00:00",
+        "pluie_cumulee": 1.8,
+        "intensite_pluie_max": 7.8,
+        "date_intensite_pluie_max": "06/06/2026 00:00",
+        "vent_moyen": 4.1,
+        "rafale_max": 28.1,
+        "date_rafale_max": "07/06/2026 08:00",
+        "pression_moyenne": 1015.3,
+        "pression_max": 1018.5,
+        "date_pression_max": "12/06/2026 08:00",
+        "graphes": {
+            "temperature": "graphes/2026-06_temperature_evolution.png",
+            "humidite": "graphes/2026-06_humidite_evolution.png",
+            "pression": "graphes/2026-06_pression_evolution.png",
+            "pluie_intensite": "graphes/2026-06_pluie_intensite.png",
+            "pluie_cumul": "graphes/2026-06_pluie_cumul_journalier.png",
+            "rafales": "graphes/2026-06_rafales_evolution.png",
+            "rose_vents": "graphes/2026-06_rose_des_vents.png"
+        }
+    },
+    "2026-07": {
+        "label": "Juillet 2026",
+        "disponible": false,
+        "message": "Aucune donnée disponible pour ce mois."
+    },
+    "2026-08": {
+        "label": "Août 2026",
+        "disponible": false,
+        "message": "Aucune donnée disponible pour ce mois."
+    }
+}

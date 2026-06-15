@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Observatoire météo du Lamentin</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f5f2;
+    color: #050505;
+}
+
+.hero {
+    padding: 32px 3vw 22px;
+    border-bottom: 1px solid #ddd;
+}
+
+.hero h1 {
+    margin: 0;
+    font-family: Impact, Haettenschweiler, 'Arial Black', sans-serif;
+    font-size: clamp(52px, 10vw, 130px);
+    line-height: 0.82;
+    letter-spacing: -0.06em;
+    font-weight: 800;
+    text-transform: lowercase;
+}
+
+.hero h1 span {
+    font-size: clamp(28px, 3vw, 44px);
+    margin-left: 18px;
+    letter-spacing: -0.05em;
+    font-weight: 500;
+}
+
+
+
+.topbar {
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.subtitle {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+select {
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid #111;
+    background: white;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+main {
+    padding: 24px 3vw 0;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 290px 1fr;
+    gap: 18px;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.panel,
+.graph-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.panel-title {
+    background: #050505;
+    color: white;
+    padding: 15px 16px;
+    font-size: 16px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.metric {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 12px 14px;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+}
+
+.metric strong {
+    white-space: nowrap;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.graph-card {
+    padding: 14px;
+}
+
+.graph-card h2 {
+    margin: 0 0 10px;
+    font-size: 13px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.graph-card img {
+    width: 100%;
+    height: 230px;
+    object-fit: contain;
+}
+
+.event {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    gap: 10px;
+    padding: 11px 14px;
+    border-bottom: 1px solid #eee;
+    font-size: 12px;
+}
+
+.no-data {
+    display: none;
+    padding: 48px;
+    background: white;
+    border: 1px dashed #aaa;
+    border-radius: 14px;
+    text-align: center;
+    font-weight: 800;
+    font-size: 22px;
+}
+
+footer {
+    margin-top: 20px;
+    padding: 18px 3vw;
+    background: #050505;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+@media(max-width: 1200px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 760px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar,
+    footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="hero">
+    <h1>observatoire météo <span>du Lamentin</span></h1>
+
+    <div class="topbar">
+        <div class="subtitle">
+            Tableau de bord climatique local
+        </div>
+
+        <select id="moisSelect">
+            <option value="2026-05">Mai 2026</option>
+            <option value="2026-06">Juin 2026</option>
+            <option value="2026-07">Juillet 2026</option>
+            <option value="2026-08">Août 2026</option>
+        </select>
+    </div>
+</header>
+
+<main>
+
+<div id="noData" class="no-data">
+    Aucune donnée disponible pour ce mois.
+</div>
+
+<section id="dashboard" class="dashboard">
+
+    <aside class="sidebar">
+
+        <div class="panel">
+            <div class="panel-title">Indicateurs clés</div>
+
+            <div class="metric"><span></span><span>Température moyenne</span><strong id="temperature_moyenne"></strong></div>
+            <div class="metric"><span></span><span>Température max</span><strong id="temperature_max"></strong></div>
+            <div class="metric"><span></span><span>Humidité moyenne</span><strong id="humidite_moyenne"></strong></div>
+            <div class="metric"><span></span><span>Pluie cumulée</span><strong id="pluie_cumulee"></strong></div>
+            <div class="metric"><span></span><span>Intensité pluie max</span><strong id="intensite_pluie_max"></strong></div>
+            <div class="metric"><span></span><span>Vent moyen</span><strong id="vent_moyen"></strong></div>
+            <div class="metric"><span></span><span>Rafale max</span><strong id="rafale_max"></strong></div>
+            <div class="metric"><span></span><span>Pression moyenne</span><strong id="pression_moyenne"></strong></div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">Santé du réseau</div>
+            <div class="metric"><span></span><span>Stations</span><strong id="stations"></strong></div>
+            <div class="metric"><span></span><span>Mesures</span><strong id="mesures"></strong></div>
+            <div class="metric"><span></span><span>Période</span><strong id="periode"></strong></div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">Événements remarquables</div>
+
+            <div class="event"><span></span><span>Température max</span><strong id="event_temp"></strong></div>
+            <div class="event"><span></span><span>Pluie max</span><strong id="event_pluie"></strong></div>
+            <div class="event"><span></span><span>Rafale max</span><strong id="event_rafale"></strong></div>
+            <div class="event"><span></span><span>Humidité max</span><strong id="event_humidite"></strong></div>
+            <div class="event"><span></span><span>Pression max</span><strong id="event_pression"></strong></div>
+        </div>
+
+    </aside>
+
+    <section class="grid">
+
+        <article class="graph-card">
+            <h2>Évolution de la température</h2>
+            <img id="img_temperature">
+        </article>
+
+        <article class="graph-card">
+            <h2>Évolution de l'humidité</h2>
+            <img id="img_humidite">
+        </article>
+
+        <article class="graph-card">
+            <h2>Évolution de la pression</h2>
+            <img id="img_pression">
+        </article>
+
+        <article class="graph-card">
+            <h2>Intensité des précipitations</h2>
+            <img id="img_pluie_intensite">
+        </article>
+
+        <article class="graph-card">
+            <h2>Cumul journalier de pluie</h2>
+            <img id="img_pluie_cumul">
+        </article>
+
+        <article class="graph-card">
+            <h2>Évolution des rafales</h2>
+            <img id="img_rafales">
+        </article>
+
+        <article class="graph-card">
+            <h2>Rose des vents</h2>
+            <img id="img_rose_vents">
+        </article>
+
+    </section>
+
+</section>
+
+</main>
+
+<footer>
+    <div>Observatoire météo du Lamentin</div>
+    <div>Données locales · Analyse automatique · Territoire durable</div>
+    <div>Généré le 15/06/2026 à 15:54</div>
+</footer>
+
+<script>
+const dashboardData = {"2026-05": {"label": "Mai 2026", "disponible": true, "periode_debut": "01/05/2026", "periode_fin": "31/05/2026", "stations": 3, "mesures": 519, "temperature_moyenne": 26.7, "temperature_max": 31.2, "date_temperature_max": "04/05/2026 12:00", "humidite_moyenne": 78.0, "humidite_max": 99, "date_humidite_max": "25/05/2026 04:00", "pluie_cumulee": 28.0, "intensite_pluie_max": 31.8, "date_intensite_pluie_max": "25/05/2026 04:00", "vent_moyen": 3.7, "rafale_max": 30.6, "date_rafale_max": "19/05/2026 08:00", "pression_moyenne": 1014.2, "pression_max": 1018.2, "date_pression_max": "15/05/2026 08:00", "graphes": {"temperature": "graphes/2026-05_temperature_evolution.png", "humidite": "graphes/2026-05_humidite_evolution.png", "pression": "graphes/2026-05_pression_evolution.png", "pluie_intensite": "graphes/2026-05_pluie_intensite.png", "pluie_cumul": "graphes/2026-05_pluie_cumul_journalier.png", "rafales": "graphes/2026-05_rafales_evolution.png", "rose_vents": "graphes/2026-05_rose_des_vents.png"}}, "2026-06": {"label": "Juin 2026", "disponible": true, "periode_debut": "01/06/2026", "periode_fin": "12/06/2026", "stations": 3, "mesures": 210, "temperature_moyenne": 27.5, "temperature_max": 30.9, "date_temperature_max": "10/06/2026 12:00", "humidite_moyenne": 75.1, "humidite_max": 91, "date_humidite_max": "06/06/2026 00:00", "pluie_cumulee": 1.8, "intensite_pluie_max": 7.8, "date_intensite_pluie_max": "06/06/2026 00:00", "vent_moyen": 4.1, "rafale_max": 28.1, "date_rafale_max": "07/06/2026 08:00", "pression_moyenne": 1015.3, "pression_max": 1018.5, "date_pression_max": "12/06/2026 08:00", "graphes": {"temperature": "graphes/2026-06_temperature_evolution.png", "humidite": "graphes/2026-06_humidite_evolution.png", "pression": "graphes/2026-06_pression_evolution.png", "pluie_intensite": "graphes/2026-06_pluie_intensite.png", "pluie_cumul": "graphes/2026-06_pluie_cumul_journalier.png", "rafales": "graphes/2026-06_rafales_evolution.png", "rose_vents": "graphes/2026-06_rose_des_vents.png"}}, "2026-07": {"label": "Juillet 2026", "disponible": false, "message": "Aucune donnée disponible pour ce mois."}, "2026-08": {"label": "Août 2026", "disponible": false, "message": "Aucune donnée disponible pour ce mois."}};
+
+function afficherValeur(id, valeur, unite) {
+    const element = document.getElementById(id);
+    if (valeur === null || valeur === undefined) {
+        element.textContent = "-";
+    } else {
+        element.textContent = valeur + " " + unite;
+    }
+}
+
+function updateDashboard(mois) {
+    const data = dashboardData[mois];
+
+    const dashboard = document.getElementById("dashboard");
+    const noData = document.getElementById("noData");
+
+    if (!data || data.disponible === false) {
+        dashboard.style.display = "none";
+        noData.style.display = "block";
+        return;
+    }
+
+    dashboard.style.display = "grid";
+    noData.style.display = "none";
+
+    afficherValeur("temperature_moyenne", data.temperature_moyenne, "°C");
+    afficherValeur("temperature_max", data.temperature_max, "°C");
+    afficherValeur("humidite_moyenne", data.humidite_moyenne, "%");
+    afficherValeur("pluie_cumulee", data.pluie_cumulee, "mm");
+    afficherValeur("intensite_pluie_max", data.intensite_pluie_max, "mm/h");
+    afficherValeur("vent_moyen", data.vent_moyen, "km/h");
+    afficherValeur("rafale_max", data.rafale_max, "km/h");
+    afficherValeur("pression_moyenne", data.pression_moyenne, "hPa");
+
+    document.getElementById("stations").textContent = data.stations;
+    document.getElementById("mesures").textContent = data.mesures;
+    document.getElementById("periode").textContent = data.periode_debut + " → " + data.periode_fin;
+
+    document.getElementById("event_temp").innerHTML =
+        data.temperature_max + " °C<br>" + data.date_temperature_max;
+
+    document.getElementById("event_pluie").innerHTML =
+        data.intensite_pluie_max + " mm/h<br>" + data.date_intensite_pluie_max;
+
+    document.getElementById("event_rafale").innerHTML =
+        data.rafale_max + " km/h<br>" + data.date_rafale_max;
+
+    document.getElementById("event_humidite").innerHTML =
+        data.humidite_max + " %<br>" + data.date_humidite_max;
+
+    document.getElementById("event_pression").innerHTML =
+        data.pression_max + " hPa<br>" + data.date_pression_max;
+
+    document.getElementById("img_temperature").src = data.graphes.temperature;
+    document.getElementById("img_humidite").src = data.graphes.humidite;
+    document.getElementById("img_pression").src = data.graphes.pression;
+    document.getElementById("img_pluie_intensite").src = data.graphes.pluie_intensite;
+    document.getElementById("img_pluie_cumul").src = data.graphes.pluie_cumul;
+    document.getElementById("img_rafales").src = data.graphes.rafales;
+    document.getElementById("img_rose_vents").src = data.graphes.rose_vents;
+}
+
+document.getElementById("moisSelect").addEventListener("change", function() {
+    updateDashboard(this.value);
+});
+
+updateDashboard("2026-05");
+</script>
+
+</body>
+</html>
