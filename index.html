@@ -49,6 +49,10 @@ body {
     gap: 24px;
 }
 
+
+
+
+
 .subtitle {
     font-size: 13px;
     font-weight: 800;
@@ -154,6 +158,36 @@ main {
     font-weight: 800;
     font-size: 22px;
 }
+
+.zone-bulletin {
+    padding: 50px 0 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.gros-bouton-bulletin {
+    background: #050505;
+    color: white;
+    text-decoration: none;
+    padding: 18px 36px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: 0.25s;
+}
+
+.gros-bouton-bulletin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.gros-bouton-bulletin.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
 
 footer {
     margin-top: 20px;
@@ -294,10 +328,19 @@ footer {
 
 </main>
 
+<div class="zone-bulletin">
+    <a id="boutonBulletinBas"
+       class="gros-bouton-bulletin"
+       href="#"
+       download>
+       Télécharger le bulletin mensuel complet
+    </a>
+</div>
+
 <footer>
     <div>Observatoire météo du Lamentin</div>
     <div>Données locales · Analyse automatique · Territoire durable</div>
-    <div>Généré le 15/06/2026 à 15:54</div>
+    <div>Généré le 15/06/2026 à 17:26</div>
 </footer>
 
 <script>
@@ -313,19 +356,36 @@ function afficherValeur(id, valeur, unite) {
 }
 
 function updateDashboard(mois) {
+
     const data = dashboardData[mois];
 
     const dashboard = document.getElementById("dashboard");
     const noData = document.getElementById("noData");
 
+    const boutonBulletinBas =
+        document.getElementById("boutonBulletinBas");
+
     if (!data || data.disponible === false) {
+
         dashboard.style.display = "none";
         noData.style.display = "block";
+
+        boutonBulletinBas.classList.add("disabled");
+        boutonBulletinBas.href = "#";
+
         return;
     }
 
     dashboard.style.display = "grid";
     noData.style.display = "none";
+
+    boutonBulletinBas.classList.remove("disabled");
+
+    boutonBulletinBas.href =
+        "bulletins/bulletin_" + mois + ".pdf";
+
+    boutonBulletinBas.download =
+        "bulletin_" + mois + ".pdf";
 
     afficherValeur("temperature_moyenne", data.temperature_moyenne, "°C");
     afficherValeur("temperature_max", data.temperature_max, "°C");
@@ -338,7 +398,8 @@ function updateDashboard(mois) {
 
     document.getElementById("stations").textContent = data.stations;
     document.getElementById("mesures").textContent = data.mesures;
-    document.getElementById("periode").textContent = data.periode_debut + " → " + data.periode_fin;
+    document.getElementById("periode").textContent =
+        data.periode_debut + " → " + data.periode_fin;
 
     document.getElementById("event_temp").innerHTML =
         data.temperature_max + " °C<br>" + data.date_temperature_max;
